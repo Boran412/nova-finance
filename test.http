@@ -1,0 +1,126 @@
+@baseUrl = http://localhost:3000
+
+### 1. Kullanıcı Kaydı (Register)
+# @name register
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123",
+  "defaultCurrency": "TRY"
+}
+
+### 2. Giriş Yap (Login)
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### JWT Token Değişkeni (Login yanıtından dönecek token buraya eklenir)
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### 3. Nakit Hesap Oluştur
+# @name createCashAccount
+POST {{baseUrl}}/accounts
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "Nakit Cüzdanım",
+  "type": "CASH",
+  "balance": 1500.50,
+  "currency": "TRY"
+}
+
+### 4. Banka Hesabı Oluştur
+# @name createBankAccount
+POST {{baseUrl}}/accounts
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "Garanti BBVA",
+  "type": "BANK",
+  "balance": 5000.00,
+  "currency": "TRY"
+}
+
+### 5. Tüm Hesapları Listele
+GET {{baseUrl}}/accounts
+Authorization: Bearer {{authToken}}
+
+### 6. Gelir Ekle (Maaş)
+POST {{baseUrl}}/transactions
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "accountId": 2,
+  "category": "Maaş",
+  "amount": 25000.00,
+  "type": "INCOME",
+  "description": "Haziran maaşı"
+}
+
+### 7. Gider Ekle (Market)
+POST {{baseUrl}}/transactions
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "accountId": 1,
+  "category": "Market",
+  "amount": 350.50,
+  "type": "EXPENSE",
+  "description": "Haftalık mutfak alışverişi"
+}
+
+### 8. Hesaplar Arası Transfer (Bankadan Nakite)
+POST {{baseUrl}}/transactions
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "accountId": 2,
+  "toAccountId": 1,
+  "category": "Para Çekme",
+  "amount": 1000.00,
+  "type": "TRANSFER",
+  "description": "ATM'den para çekildi"
+}
+
+### 9. Tüm İşlem Hareketlerini Listele
+GET {{baseUrl}}/transactions
+Authorization: Bearer {{authToken}}
+
+### 10. Kredi Tanımla (Bankaya Otomatik Yatırılarak)
+# @name createLoan
+POST {{baseUrl}}/loans
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "İhtiyaç Kredisi",
+  "totalAmount": 10000.00,
+  "interestRate": 3.50,
+  "termMonths": 12,
+  "accountId": 2
+}
+
+### 11. Kredileri Listele
+GET {{baseUrl}}/loans
+Authorization: Bearer {{authToken}}
+
+### 12. Kredi Taksiti Öde (Taksit düştükçe banka hesabından düşer ve otomatik gider yazar)
+POST {{baseUrl}}/loans/1/pay
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "accountId": 2
+}
