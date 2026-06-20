@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { AccountModule } from './account/account.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { LoanModule } from './loan/loan.module';
+import { FeedbackModule } from './feedback/feedback.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { LoanModule } from './loan/loan.module';
     AccountModule,
     TransactionModule,
     LoanModule,
+    FeedbackModule,
   ],
   controllers: [AppController],
   providers: [AppService],

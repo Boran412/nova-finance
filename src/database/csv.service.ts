@@ -54,6 +54,13 @@ export class CsvService implements OnModuleInit {
       'createdAt',
       'updatedAt',
     ],
+    feedbacks: [
+      'id',
+      'userId',
+      'rating',
+      'comment',
+      'createdAt',
+    ],
   };
 
   private lockPromise: Promise<void> = Promise.resolve();
