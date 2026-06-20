@@ -117,15 +117,27 @@ export class CsvService implements OnModuleInit {
 
   private async ensureFileInDb(filename: string) {
     const res = await this.pool.query(
-      'SELECT filename FROM file_store WHERE filename = $1',
+      'SELECT filename, content FROM file_store WHERE filename = $1',
       [filename],
     );
-    if (res.rows.length === 0) {
-      const headerStr =
-        this.headers[filename as keyof typeof this.headers].join(',') + '\n';
+    
+    const isDbEmpty =
+      res.rows.length === 0 ||
+      res.rows[0].content.split('\n').filter((l) => l.trim() !== '').length <= 1;
+
+    if (isDbEmpty) {
+      const localFilePath = path.join(process.cwd(), 'data', `${filename}.csv`);
+      let contentStr = '';
+      if (fs.existsSync(localFilePath)) {
+        contentStr = fs.readFileSync(localFilePath, 'utf8');
+      } else {
+        contentStr =
+          this.headers[filename as keyof typeof this.headers].join(',') + '\n';
+      }
+
       await this.pool.query(
-        'INSERT INTO file_store (filename, content) VALUES ($1, $2)',
-        [filename, headerStr],
+        'INSERT INTO file_store (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2',
+        [filename, contentStr],
       );
     }
   }
