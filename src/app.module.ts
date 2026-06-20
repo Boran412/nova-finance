@@ -7,6 +7,10 @@ import { AccountModule } from './account/account.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { LoanModule } from './loan/loan.module';
 import { FeedbackModule } from './feedback/feedback.module';
+import { BudgetModule } from './budget/budget.module';
+import { GoalModule } from './goal/goal.module';
+import { RecurringModule } from './recurring/recurring.module';
+import { CurrencyModule } from './currency/currency.module';
 
 @Module({
   imports: [
@@ -16,6 +20,10 @@ import { FeedbackModule } from './feedback/feedback.module';
     TransactionModule,
     LoanModule,
     FeedbackModule,
+    BudgetModule,
+    GoalModule,
+    RecurringModule,
+    CurrencyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

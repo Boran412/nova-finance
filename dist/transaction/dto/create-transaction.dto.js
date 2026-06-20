@@ -37,7 +37,9 @@ __decorate([
     __metadata("design:type", Number)
 ], CreateTransactionDto.prototype, "amount", void 0);
 __decorate([
-    (0, class_validator_1.IsEnum)(types_1.TransactionType, { message: 'Geçersiz işlem türü. INCOME, EXPENSE veya TRANSFER olmalıdır.' }),
+    (0, class_validator_1.IsEnum)(types_1.TransactionType, {
+        message: 'Geçersiz işlem türü. INCOME, EXPENSE veya TRANSFER olmalıdır.',
+    }),
     __metadata("design:type", String)
 ], CreateTransactionDto.prototype, "type", void 0);
 __decorate([

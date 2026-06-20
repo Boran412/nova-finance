@@ -113,7 +113,9 @@ let LoanService = class LoanService {
             const totalAmountDec = new decimal_js_1.Decimal(loan.totalAmount);
             const paidAmountDec = new decimal_js_1.Decimal(loan.paidAmount);
             const remainingBalance = totalAmountDec.minus(paidAmountDec);
-            let paymentAmount = dto.amount ? new decimal_js_1.Decimal(dto.amount) : new decimal_js_1.Decimal(loan.monthlyPayment);
+            let paymentAmount = dto.amount
+                ? new decimal_js_1.Decimal(dto.amount)
+                : new decimal_js_1.Decimal(loan.monthlyPayment);
             if (paymentAmount.gt(remainingBalance)) {
                 paymentAmount = remainingBalance;
             }
@@ -137,7 +139,8 @@ let LoanService = class LoanService {
             });
             loan.paidAmount = paidAmountDec.plus(paymentAmount).toNumber();
             loan.remainingInstallments = loan.remainingInstallments - 1;
-            if (loan.remainingInstallments < 0 || new decimal_js_1.Decimal(loan.paidAmount).gte(totalAmountDec)) {
+            if (loan.remainingInstallments < 0 ||
+                new decimal_js_1.Decimal(loan.paidAmount).gte(totalAmountDec)) {
                 loan.remainingInstallments = 0;
             }
             loan.updatedAt = new Date();

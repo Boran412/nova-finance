@@ -78,7 +78,9 @@ let TransactionService = class TransactionService {
             .filter((tx) => tx.userId === userId)
             .map((tx) => {
             const account = accounts.find((acc) => acc.id === tx.accountId);
-            const toAccount = tx.toAccountId ? accounts.find((acc) => acc.id === tx.toAccountId) : null;
+            const toAccount = tx.toAccountId
+                ? accounts.find((acc) => acc.id === tx.toAccountId)
+                : null;
             return {
                 ...tx,
                 account,
@@ -95,7 +97,9 @@ let TransactionService = class TransactionService {
         }
         const accounts = await this.csvService.read('accounts');
         const account = accounts.find((acc) => acc.id === transaction.accountId);
-        const toAccount = transaction.toAccountId ? accounts.find((acc) => acc.id === transaction.toAccountId) : null;
+        const toAccount = transaction.toAccountId
+            ? accounts.find((acc) => acc.id === transaction.toAccountId)
+            : null;
         return {
             ...transaction,
             account,
@@ -129,7 +133,9 @@ let TransactionService = class TransactionService {
                         if (toAccountIndex !== -1) {
                             const toAccount = accounts[toAccountIndex];
                             const toAccountBalanceDec = new decimal_js_1.Decimal(toAccount.balance);
-                            toAccount.balance = toAccountBalanceDec.minus(amountDecimal).toNumber();
+                            toAccount.balance = toAccountBalanceDec
+                                .minus(amountDecimal)
+                                .toNumber();
                         }
                     }
                 }

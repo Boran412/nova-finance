@@ -61,6 +61,36 @@ export class CsvService implements OnModuleInit {
       'comment',
       'createdAt',
     ],
+    budgets: [
+      'id',
+      'userId',
+      'category',
+      'limitAmount',
+      'createdAt',
+      'updatedAt',
+    ],
+    goals: [
+      'id',
+      'userId',
+      'name',
+      'targetAmount',
+      'currentAmount',
+      'createdAt',
+      'updatedAt',
+    ],
+    recurring: [
+      'id',
+      'userId',
+      'accountId',
+      'category',
+      'amount',
+      'type',
+      'description',
+      'interval',
+      'nextExecutionDate',
+      'createdAt',
+      'updatedAt',
+    ],
   };
 
   private lockPromise: Promise<void> = Promise.resolve();

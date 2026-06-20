@@ -25,7 +25,9 @@ __decorate([
     __metadata("design:type", String)
 ], CreateAccountDto.prototype, "name", void 0);
 __decorate([
-    (0, class_validator_1.IsEnum)(types_1.AccountType, { message: 'Geçersiz hesap türü. CASH, BANK, CRYPTO veya STOCK olmalıdır.' }),
+    (0, class_validator_1.IsEnum)(types_1.AccountType, {
+        message: 'Geçersiz hesap türü. CASH, BANK, CRYPTO veya STOCK olmalıdır.',
+    }),
     __metadata("design:type", String)
 ], CreateAccountDto.prototype, "type", void 0);
 __decorate([

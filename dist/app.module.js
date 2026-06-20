@@ -15,12 +15,28 @@ const auth_module_1 = require("./auth/auth.module");
 const account_module_1 = require("./account/account.module");
 const transaction_module_1 = require("./transaction/transaction.module");
 const loan_module_1 = require("./loan/loan.module");
+const feedback_module_1 = require("./feedback/feedback.module");
+const budget_module_1 = require("./budget/budget.module");
+const goal_module_1 = require("./goal/goal.module");
+const recurring_module_1 = require("./recurring/recurring.module");
+const currency_module_1 = require("./currency/currency.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [database_module_1.DatabaseModule, auth_module_1.AuthModule, account_module_1.AccountModule, transaction_module_1.TransactionModule, loan_module_1.LoanModule],
+        imports: [
+            database_module_1.DatabaseModule,
+            auth_module_1.AuthModule,
+            account_module_1.AccountModule,
+            transaction_module_1.TransactionModule,
+            loan_module_1.LoanModule,
+            feedback_module_1.FeedbackModule,
+            budget_module_1.BudgetModule,
+            goal_module_1.GoalModule,
+            recurring_module_1.RecurringModule,
+            currency_module_1.CurrencyModule,
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
