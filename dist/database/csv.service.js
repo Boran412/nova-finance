@@ -44,6 +44,7 @@ const common_1 = require("@nestjs/common");
 const pg_1 = require("pg");
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
+const async_hooks_1 = require("async_hooks");
 let CsvService = class CsvService {
     pool;
     headers = {
@@ -132,6 +133,7 @@ let CsvService = class CsvService {
         ],
     };
     lockPromise = Promise.resolve();
+    asyncLocalStorage = new async_hooks_1.AsyncLocalStorage();
     async onModuleInit() {
         const envPath = path.join(process.cwd(), '.env');
         if (fs.existsSync(envPath)) {
@@ -289,6 +291,10 @@ let CsvService = class CsvService {
         return result;
     }
     async runTransaction(fn) {
+        const store = this.asyncLocalStorage.getStore();
+        if (store?.inTx) {
+            return await fn();
+        }
         let resolveLock = () => { };
         const currentLock = this.lockPromise;
         this.lockPromise = new Promise((resolve) => {
@@ -296,7 +302,7 @@ let CsvService = class CsvService {
         });
         await currentLock;
         try {
-            return await fn();
+            return await this.asyncLocalStorage.run({ inTx: true }, fn);
         }
         finally {
             resolveLock();

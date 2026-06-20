@@ -3,6 +3,7 @@ export declare class CsvService implements OnModuleInit {
     private pool;
     private readonly headers;
     private lockPromise;
+    private readonly asyncLocalStorage;
     onModuleInit(): Promise<void>;
     private ensureFileInDb;
     read<T>(model: keyof typeof this.headers): Promise<T[]>;

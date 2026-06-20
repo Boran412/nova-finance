@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Pool } from 'pg';
 import * as fs from 'fs';
 import * as path from 'path';
+import { AsyncLocalStorage } from 'async_hooks';
 
 @Injectable()
 export class CsvService implements OnModuleInit {
@@ -94,6 +95,7 @@ export class CsvService implements OnModuleInit {
   };
 
   private lockPromise: Promise<void> = Promise.resolve();
+  private readonly asyncLocalStorage = new AsyncLocalStorage<{ inTx: boolean }>();
 
   async onModuleInit() {
     // .env dosyasını manuel oku (NestJS'te dotenv kullanılmadığı durumlar için)
@@ -289,6 +291,11 @@ export class CsvService implements OnModuleInit {
   }
 
   async runTransaction<T>(fn: () => Promise<T>): Promise<T> {
+    const store = this.asyncLocalStorage.getStore();
+    if (store?.inTx) {
+      return await fn();
+    }
+
     let resolveLock: () => void = () => {};
     const currentLock = this.lockPromise;
     this.lockPromise = new Promise<void>((resolve) => {
@@ -297,7 +304,7 @@ export class CsvService implements OnModuleInit {
 
     await currentLock;
     try {
-      return await fn();
+      return await this.asyncLocalStorage.run({ inTx: true }, fn);
     } finally {
       resolveLock();
     }
